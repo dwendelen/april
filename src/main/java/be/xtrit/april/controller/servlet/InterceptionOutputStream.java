@@ -1,11 +1,8 @@
 package be.xtrit.april.controller.servlet;
 
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.WriteListener;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class InterceptionOutputStream extends ServletOutputStream
@@ -15,7 +12,7 @@ public class InterceptionOutputStream extends ServletOutputStream
     boolean fillBuffer = true;
     boolean eat = false;
 
-    private ByteOutputStream byteOutputStream = new ByteOutputStream(50);
+    private ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream(50);
     int todo = 50;
 
     public InterceptionOutputStream(ServletOutputStream servletOutputStream) {
@@ -59,7 +56,7 @@ public class InterceptionOutputStream extends ServletOutputStream
     }
 
     private void checkContentBuffer() throws IOException {
-        byte[] bytes = byteOutputStream.getBytes();
+        byte[] bytes = byteOutputStream.toByteArray();
         String content = new String(bytes);
 
         if(content.contains("<!DOCTYPE html><html>")) {
@@ -79,7 +76,7 @@ public class InterceptionOutputStream extends ServletOutputStream
             return;
         }
 
-        byte[] bytes = byteOutputStream.getBytes();
+        byte[] bytes = byteOutputStream.toByteArray();
         for (byte aByte : bytes) {
             servletOutputStream.write(aByte);
         }
