@@ -1,0 +1,1 @@
+nohup ./gradlew dev bootRun > output.log &

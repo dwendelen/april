@@ -23,3 +23,7 @@ dependencies {
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+task dev << {
+    bootRun.systemProperty 'spring.profiles.active', 'dev'
+}
