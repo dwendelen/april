@@ -1,9 +1,10 @@
-package be.xtrit.april.controller;
+package be.xtrit.april.controller.servlet;
 
 import be.xtrit.april.model.JokeExecutor;
 import be.xtrit.april.model.jokes.ErrorJoke;
 import org.mitre.dsmiley.httpproxy.ProxyServlet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.client.support.HttpRequestWrapper;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -51,8 +52,15 @@ public class MasterServlet extends HttpServlet {
         handleNormal(req, resp);
     }
 
-    private void handleNormal(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void handleNormal(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         try {
+            InterceptionResponse interceptionResponse = new InterceptionResponse(resp);
+            proxyServlet.service(req, interceptionResponse);
+            interceptionResponse.flushBuffer();
+            if(interceptionResponse.wasWritten()) {
+                return;
+            }
+
             jokeExecutor.handle(req, resp);
         } catch (Exception e) {
             //e.printStackTrace();

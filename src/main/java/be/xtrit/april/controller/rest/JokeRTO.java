@@ -1,4 +1,4 @@
-package be.xtrit.april.controller;
+package be.xtrit.april.controller.rest;
 
 import be.xtrit.april.model.JokeInstance;
 

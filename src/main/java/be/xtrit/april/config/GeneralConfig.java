@@ -1,6 +1,6 @@
 package be.xtrit.april.config;
 
-import be.xtrit.april.controller.MasterServlet;
+import be.xtrit.april.controller.servlet.MasterServlet;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.DispatcherServlet;
 
 @Configuration
 public class GeneralConfig {
