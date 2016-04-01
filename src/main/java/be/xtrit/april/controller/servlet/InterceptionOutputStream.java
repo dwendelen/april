@@ -59,6 +59,7 @@ public class InterceptionOutputStream extends ServletOutputStream
         byte[] bytes = byteOutputStream.toByteArray();
         String content = new String(bytes);
 
+        System.out.println(content);
         if(content.contains("<!DOCTYPE html><html>")) {
             eat = true;
             System.out.println("Intercepting!");
