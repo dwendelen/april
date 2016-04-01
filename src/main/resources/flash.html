@@ -1,0 +1,46 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <style>
+        body {
+            background-color: $color-1;
+            display: table;
+        }
+        #text {
+            color: $text-color-1;
+            text-align: center;
+            display: table-cell;
+            vertical-align: middle;
+            font-size: $text-size pt;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+    </style>
+    <script>
+        var colors = ["$color-1", "$color-2"];
+        var textColors = ["$text-color-1", "$text-color-2"];
+        var index = 0;
+
+        function swap() {
+            index = (index + 1)%2;
+            $('body').css('background-color', colors[index]);
+            $('#text').css('color', textColors[index]);
+        }
+
+        setInterval(swap, $flash-timeout);
+        setTimeout(function() {location.reload()}, $timeout);
+    </script>
+</head>
+<body>
+            <p id="text">
+                $text
+            </p>
+</table>
+
+</body>
+</html>

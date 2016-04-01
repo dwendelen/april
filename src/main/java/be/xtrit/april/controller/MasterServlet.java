@@ -1,12 +1,10 @@
-package be.xtrit.april;
+package be.xtrit.april.controller;
 
-import org.apache.tomcat.util.http.fileupload.IOUtils;
+import be.xtrit.april.model.JokeExecutor;
+import be.xtrit.april.model.jokes.ErrorJoke;
 import org.mitre.dsmiley.httpproxy.ProxyServlet;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.servlet.*;
 import javax.servlet.ServletConfig;
@@ -19,23 +17,21 @@ import java.io.IOException;
 public class MasterServlet extends HttpServlet {
     @Autowired
     private ProxyServlet proxyServlet;
-    @Autowired
-    private DispatcherServlet dispatcherServlet;
 
     @Autowired
-    private ResourceLoader resourceLoader;
+    private ErrorJoke errorJoke;
+    @Autowired
+    private JokeExecutor jokeExecutor;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         proxyServlet.init(config);
-        dispatcherServlet.init(config);
         super.init(config);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         handleNormal(req, resp);
     }
 
@@ -57,19 +53,16 @@ public class MasterServlet extends HttpServlet {
 
     private void handleNormal(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            proxyServlet.service(req, resp);
+            jokeExecutor.handle(req, resp);
         } catch (Exception e) {
-            e.printStackTrace();
-            Resource resource = resourceLoader.getResource("classpath:/error.html");
-            resp.setContentLength((int) resource.contentLength());
-            IOUtils.copy(resource.getInputStream(), resp.getOutputStream());
+            //e.printStackTrace();
+            errorJoke.handle(req, resp);
         }
     }
 
     @Override
     public void destroy() {
         proxyServlet.destroy();
-        dispatcherServlet.destroy();
         super.destroy();
     }
 }

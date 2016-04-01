@@ -1,6 +1,5 @@
-package be.xtrit.april;
+package be.xtrit.april.config;
 
-import org.springframework.boot.autoconfigure.web.EmbeddedServletContainerAutoConfiguration;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -9,15 +8,15 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@Profile("dev")
-@PropertySource("classpath:/dev.properties")
-public class DevConfig {
+@Profile("default")
+@PropertySource("classpath:/default.properties")
+public class DefaultConfig {
     @Bean
     public EmbeddedServletContainerCustomizer embeddedServletContainerCustomizer() {
         return new EmbeddedServletContainerCustomizer() {
             @Override
             public void customize(ConfigurableEmbeddedServletContainer container) {
-                container.setPort(7001);
+                container.setPort(7000);
             }
         };
     }

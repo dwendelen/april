@@ -1,0 +1,41 @@
+GET http://localhost:7000/april/jokes
+POST http://localhost:7000/april/jokes/clear
+POST http://localhost:7000/april/jokes/bcabfe16-f4b7-4a67-a19c-2deebc8bb868/remove
+POST http://localhost:7000/april/next
+
+POST http://localhost:7000/april/jokes/add
+{
+"joke": "null",
+"duration":20
+}
+{
+  "joke": "flash",
+  "duration":10,
+  "options": {
+    "timeout":"30000",
+    "flash-timeout": "200",
+    "color-1":"blue",
+    "color-2": "red",
+    "text": "Dakke!",
+    "text-color-1": "yellow",
+    "text-color-2": "green",
+    "size": "100"
+  }
+}
+{
+  "joke": "image",
+  "duration":10,
+  "options": {
+    "image":"http://deredactie.be/cm/vrtnieuws/binnenland/1.2616564",
+    "color":"black",
+    "timeout":"30000"
+  }
+}
+{
+  "joke": "index",
+  "duration":0
+}
+{
+"joke": "error",
+"duration":0
+}
