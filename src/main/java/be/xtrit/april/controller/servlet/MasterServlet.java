@@ -4,11 +4,10 @@ import be.xtrit.april.model.JokeExecutor;
 import be.xtrit.april.model.jokes.ErrorJoke;
 import org.mitre.dsmiley.httpproxy.ProxyServlet;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.client.support.HttpRequestWrapper;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.*;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,15 +52,18 @@ public class MasterServlet extends HttpServlet {
     }
 
     private void handleNormal(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        try {
-            InterceptionResponse interceptionResponse = new InterceptionResponse(resp);
-            proxyServlet.service(req, interceptionResponse);
-            interceptionResponse.flushBuffer();
-            if(interceptionResponse.wasWritten()) {
-                return;
-            }
 
-            jokeExecutor.handle(req, resp);
+        try {
+            if(     req.getRequestURI().startsWith("/view") ||
+                    req.getRequestURI().startsWith("/job") ||
+                    req.getRequestURI().equals("/")         ||
+                    req.getRequestURI().startsWith("/manage")) {
+
+                System.out.println("Intercepting");
+                jokeExecutor.handle(req, resp);
+            } else {
+                proxyServlet.service(req, resp);
+            }
         } catch (Exception e) {
             //e.printStackTrace();
             errorJoke.handle(req, resp);
